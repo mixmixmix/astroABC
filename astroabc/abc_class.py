@@ -5,7 +5,7 @@
 import numpy as np
 import scipy.stats
 import sys
-from sklearn.covariance import GraphLassoCV, ledoit_wolf
+from sklearn.covariance import GraphicalLassoCV, ledoit_wolf
 #import os
 #sys.path.append(os.getcwd())
 
@@ -319,12 +319,12 @@ class ABC_class(object):
         def particle_weight(self,tup_in):
                 '''
                 At each iteraction, t, this method calculates the weight of particle i
-                at t not equal to 0 weight is calculated according to kernel. 
-                input: 
+                at t not equal to 0 weight is calculated according to kernel.
+                input:
                         tup_in is a tuple of (iter t,particle id Pid)
                 '''
                 t, Pid = tup_in
-                tm1 = t-1 
+                tm1 = t-1
 
                 # apply kernel to each particle's parameter vector
                 Kf = self.kernel(Pid,t)
@@ -336,7 +336,7 @@ class ABC_class(object):
                 return priorproduct/(np.sum(self.wgt[tm1]*kernels))
 
 
-        def kernel(self,Pid,t):                         
+        def kernel(self,Pid,t):
                 if self.variance_method == 4:
                     covariance = self.variance[Pid]
                 else:
