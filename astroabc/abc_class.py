@@ -221,7 +221,12 @@ class ABC_class(object):
                                         self.parallel.sim_pool.worker()
                                         self.end_sampling = True
                         else:
-                                ctr = self.sample_loop(ctr)
+                                try:
+                                        ctr = self.sample_loop(ctr)
+                                #if failed keep ctr as was
+                                except:
+                                        pass
+
 
                 if self.mpi or self.mp:
                         if self.mpi_splitcomm:
