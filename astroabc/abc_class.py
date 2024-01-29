@@ -223,9 +223,12 @@ class ABC_class(object):
                         else:
                                 try:
                                         ctr = self.sample_loop(ctr)
-                                #if failed keep ctr as was
-                                except:
-                                        pass
+                                #if failed keep ctr as was, and print the error
+                                except Exception as e:
+                                        print("Error in sample_loop:", e)
+                                        print("just ignoring and moving on")
+                                        # self.end_sampling = True
+                                        continue
 
 
                 if self.mpi or self.mp:
