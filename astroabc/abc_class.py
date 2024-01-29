@@ -221,14 +221,7 @@ class ABC_class(object):
                                         self.parallel.sim_pool.worker()
                                         self.end_sampling = True
                         else:
-                                try:
-                                        ctr = self.sample_loop(ctr)
-                                #if failed keep ctr as was, and print the error
-                                except Exception as e:
-                                        print("Error in sample_loop:", e)
-                                        print("just ignoring and moving on")
-                                        # self.end_sampling = True
-                                        continue
+                                ctr = self.sample_loop(ctr)
 
 
                 if self.mpi or self.mp:

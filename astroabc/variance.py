@@ -7,7 +7,7 @@ class Variance(object):
         '''General variance class'''
         def __init__(self,nparam,start):
                 '''
-                Input: 
+                Input:
                 nparam: parameter vector for all particles at iter t
                 start: Boolean,  True if iteration 0, False otherwise
                 '''
@@ -18,7 +18,7 @@ class Variance(object):
                 '''
                 On first iteration calculate the variance as either the standard deviation
                 or covariance amongst the particles, depending on value chosen for pert_kernel
-                Input: 
+                Input:
                 t: Iteration number
                 params: parameter vector for all particles
                 '''
@@ -32,7 +32,7 @@ class TVZ(Variance):
         '''Simple variance estimate (Turner & Van Zandt 2012) '''
         def __init__(self,nparam,pert_kernel):
                 ''' Input:
-                nparam: parameter vector for all particles at iter t 
+                nparam: parameter vector for all particles at iter t
                 pert_kernel: 1 component wise perturbation with local diag variance,
                         2 multivariate perturbation based on local covariance
                 '''
@@ -45,7 +45,7 @@ class TVZ(Variance):
                 pms: parameter vector for all particles from previous iteration
                 Returns:
                         pert_kernel =1:twice the diagonal variance
-                        pert_kernel =2:twice the sample covariance 
+                        pert_kernel =2:twice the sample covariance
                 '''
                 if self.start:
                         return self.first_iter(t,params)
@@ -58,8 +58,8 @@ class TVZ(Variance):
 class nearest_neighbour(Variance):
         ''' Local weighted covariance matrix class using k nearest neighbours'''
         def __init__(self,nparam,npart,pert_kernel):
-                ''' 
-                Input: 
+                '''
+                Input:
                 nparam: parameter vector for all particles at iter t and t-1
                 npart: number of particles
                 pert_kernel: 1 component wise perturbation with local diag variance,
@@ -70,7 +70,7 @@ class nearest_neighbour(Variance):
                 self.npart=npart
                 self.pert_kernel = pert_kernel
 
-        def get_var(self,t,pms,wgt,k_near):                                                     
+        def get_var(self,t,pms,wgt,k_near):
                 '''Method to calculate the local weighted particle covariance matrix using k nn
                 https://en.wikipedia.org/wiki/Weighted_arithmetic_mean#Weighted_sample_covariance
                 Input:
@@ -94,7 +94,7 @@ class nearest_neighbour(Variance):
                         return self.first_iter(t,pms)
                 else:
                         var_particles = np.zeros((self.npart,self.nparam,self.nparam))
-                        leaf = 0.2*self.npart
+                        leaf = int(0.2*self.npart)
                         tree = KDTree(pms,leaf_size = leaf)
                         for ll in range(self.npart):
                                 #for each particle, find the k_near nearest neighbours and return their particle id
@@ -138,7 +138,7 @@ class Filippi(Variance):
                 wgt: particle weights at t-1
                 Returns:
                         pert_kernel =1:component wise perturbation with local diag variance (Filippi et al 2012 Eq. 11 and 12)
-                        pert_kernel =2:multivariate perturbation based on local covariance 
+                        pert_kernel =2:multivariate perturbation based on local covariance
                 '''
                 tm1 = t-1
                 if t==0:
@@ -169,7 +169,7 @@ class Filippi(Variance):
 
 
 class weighted_cov(Variance):
-        ''' Weighted covariance matrix class''' 
+        ''' Weighted covariance matrix class'''
         def __init__(self,nparam,npart,pert_kernel):
                 '''
                 Input:
@@ -216,8 +216,8 @@ class weighted_cov(Variance):
 class Leodoit_Wolf(Variance):
         '''l2 shrinkage with the Ledoit-Wolf estimator'''
         def __init__(self,nparam,pert_kernel):
-                ''' Input: 
-                nparam: parameter vector for all particles at iter t 
+                ''' Input:
+                nparam: parameter vector for all particles at iter t
                 pert_kernel: 1 component wise perturbation with local diag variance,
                         2 multivariate perturbation based on local covariance
                 '''
@@ -225,7 +225,7 @@ class Leodoit_Wolf(Variance):
                 self.pert_kernel = pert_kernel
 
         def get_var(self,t,params):
-                ''' Input: 
+                ''' Input:
                 t: iteration level
                 pms: parameter vector for all particles from previous iteration
                 Returns:
@@ -236,5 +236,3 @@ class Leodoit_Wolf(Variance):
                 else:
                     var, _  =  ledoit_wolf(params)
                 return var
-
-
