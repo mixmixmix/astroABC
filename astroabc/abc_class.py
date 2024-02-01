@@ -279,7 +279,10 @@ class ABC_class(object):
                                 if t:
                                         self.wgt[t][i] = self.particle_weight((t,i))
                 #normalize
-                self.wgt[t] = self.wgt[t]/np.sum(self.wgt[t])
+                if np.sum(self.wgt[t]) == 0:
+                        self.wgt[t] = 0
+                else:
+                        self.wgt[t] = self.wgt[t]/np.sum(self.wgt[t])
 
 
                 if self.outfile and self.parallel.master==0:
